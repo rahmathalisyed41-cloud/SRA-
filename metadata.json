@@ -1,0 +1,7 @@
+{
+  "name": "SRA Goat for Sale Hyderabad",
+  "description": "Genuine live animal marketplace connecting goat and sheep farmers and buyers across Hyderabad and Telangana.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

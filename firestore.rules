@@ -1,0 +1,127 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default-deny all unmatched paths
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'rahmathalisyed41@gmail.com' ||
+        (request.auth.token.phone_number != null && request.auth.token.phone_number == '+919999999999') ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn();
+      allow create: if isOwner(userId) && (
+        !('role' in request.resource.data) ||
+        request.resource.data.role == 'USER' ||
+        isAdmin()
+      );
+      allow update: if isOwner(userId) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role']) ||
+        isAdmin()
+      ) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Listings collection
+    match /listings/{listingId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn() &&
+        request.resource.data.sellerId == request.auth.uid &&
+        isValidId(listingId);
+      allow update: if isSignedIn() && (
+        resource.data.sellerId == request.auth.uid ||
+        isAdmin() ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewsCount'])
+      );
+      allow delete: if isSignedIn() && (
+        resource.data.sellerId == request.auth.uid ||
+        isAdmin()
+      );
+    }
+
+    // Animal Shorts reels
+    match /shorts/{shortId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isSignedIn() &&
+        request.resource.data.sellerId == request.auth.uid &&
+        isValidId(shortId);
+      allow update: if isSignedIn() && (
+        resource.data.sellerId == request.auth.uid ||
+        isAdmin() ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewsCount', 'likesCount', 'commentsCount'])
+      );
+      allow delete: if isSignedIn() && (
+        resource.data.sellerId == request.auth.uid ||
+        isAdmin()
+      );
+
+      // Comments subcollection
+      match /comments/{commentId} {
+        allow read: if true;
+        allow create: if isSignedIn() &&
+          request.resource.data.userId == request.auth.uid;
+        allow update, delete: if isSignedIn() && (
+          resource.data.userId == request.auth.uid ||
+          isAdmin()
+        );
+      }
+    }
+
+    // Likes collection
+    match /likes/{likeId} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    // Favorites collection
+    match /favorites/{favoriteId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    // Breeds master catalog
+    match /breeds/{breedId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Platform settings
+    match /adminSettings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Admins registry
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,501 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for farmers, sellers, and buyers on SRA Goat platform.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "User unique identifier matching auth UID"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "User mobile phone number"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user"
+        },
+        "farmerName": {
+          "type": "string",
+          "description": "Farmer or trade display name"
+        },
+        "farmName": {
+          "type": "string",
+          "description": "Farm or ranch name"
+        },
+        "photoUrl": {
+          "type": "string",
+          "description": "Avatar photo URL"
+        },
+        "farmPhotoUrl": {
+          "type": "string",
+          "description": "Farm photo URL"
+        },
+        "villageArea": {
+          "type": "string",
+          "description": "Village or area in Hyderabad/Telangana"
+        },
+        "city": {
+          "type": "string",
+          "description": "City name, defaults to Hyderabad"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["USER", "ADMIN"],
+          "description": "Security authorization role"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ACTIVE", "SUSPENDED"],
+          "description": "Account status"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["id", "phoneNumber", "name", "role", "status"]
+    },
+    "Listing": {
+      "title": "Listing",
+      "description": "Live animal listing for sale (Goat or Sheep). Never food or meat.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique listing ID"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["goat", "sheep"],
+          "description": "Animal category"
+        },
+        "subcategory": {
+          "type": "string",
+          "description": "Subcategory like male goats, female goats, kids, rams, ewes, lambs, exotic"
+        },
+        "breed": {
+          "type": "string",
+          "description": "Animal breed (e.g. Jamnapari, Boer, Osmanabadi, Sirohi, Nellore, Deccani)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Listing headline title"
+        },
+        "name": {
+          "type": "string",
+          "description": "Animal pet name or identifier"
+        },
+        "gender": {
+          "type": "string",
+          "enum": ["male", "female"],
+          "description": "Biological sex of the animal"
+        },
+        "ageMonths": {
+          "type": "number",
+          "description": "Age in months"
+        },
+        "weightKg": {
+          "type": "number",
+          "description": "Live body weight in kg"
+        },
+        "teethCount": {
+          "type": "number",
+          "description": "Teeth count (e.g. 2, 4, 6, 8 / adant)"
+        },
+        "price": {
+          "type": "number",
+          "description": "Price in INR"
+        },
+        "isNegotiable": {
+          "type": "boolean",
+          "description": "Whether price is negotiable"
+        },
+        "location": {
+          "type": "string",
+          "description": "Full location string"
+        },
+        "villageArea": {
+          "type": "string",
+          "description": "Village or colony name in Hyderabad"
+        },
+        "city": {
+          "type": "string",
+          "description": "City name"
+        },
+        "lat": {
+          "type": "number",
+          "description": "Approximate latitude coordinate"
+        },
+        "lng": {
+          "type": "number",
+          "description": "Approximate longitude coordinate"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of health, vaccination, lineage"
+        },
+        "sellerId": {
+          "type": "string",
+          "description": "UID of the listing seller"
+        },
+        "sellerName": {
+          "type": "string",
+          "description": "Name of the seller"
+        },
+        "farmerName": {
+          "type": "string",
+          "description": "Farmer name"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Direct call contact number"
+        },
+        "whatsAppNumber": {
+          "type": "string",
+          "description": "WhatsApp contact number"
+        },
+        "farmerPhotoUrl": {
+          "type": "string",
+          "description": "Farmer photo URL"
+        },
+        "farmPhotoUrl": {
+          "type": "string",
+          "description": "Farm photo URL"
+        },
+        "photos": {
+          "type": "array",
+          "description": "Photo URLs of the animal"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "Video presentation URL"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "published", "available", "sold", "deleted"],
+          "description": "Current status of the listing"
+        },
+        "viewsCount": {
+          "type": "number",
+          "description": "Number of times listing was viewed"
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Whether featured on homepage"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last update timestamp"
+        }
+      },
+      "required": ["id", "category", "breed", "gender", "price", "sellerId", "phoneNumber", "status"]
+    },
+    "Short": {
+      "title": "Short",
+      "description": "Vertical full-screen 9:16 animal video reel showcasing live goats/sheep.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique short reel ID"
+        },
+        "title": {
+          "type": "string",
+          "description": "Short title"
+        },
+        "caption": {
+          "type": "string",
+          "description": "Caption description"
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "Video playback URL"
+        },
+        "thumbnailUrl": {
+          "type": "string",
+          "description": "Cover thumbnail image URL"
+        },
+        "listingId": {
+          "type": "string",
+          "description": "Linked listing ID"
+        },
+        "sellerId": {
+          "type": "string",
+          "description": "Creator user UID"
+        },
+        "sellerName": {
+          "type": "string",
+          "description": "Creator display name"
+        },
+        "breed": {
+          "type": "string",
+          "description": "Animal breed"
+        },
+        "location": {
+          "type": "string",
+          "description": "Location description"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Seller call phone number"
+        },
+        "whatsAppNumber": {
+          "type": "string",
+          "description": "Seller WhatsApp number"
+        },
+        "likesCount": {
+          "type": "number",
+          "description": "Total like count"
+        },
+        "commentsCount": {
+          "type": "number",
+          "description": "Total comments count"
+        },
+        "viewsCount": {
+          "type": "number",
+          "description": "View counts"
+        },
+        "isFeatured": {
+          "type": "boolean",
+          "description": "Featured short reel"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "hidden", "deleted"],
+          "description": "Short status"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["id", "videoUrl", "sellerId", "status"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "User comment on an animal short reel.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Comment ID"
+        },
+        "shortId": {
+          "type": "string",
+          "description": "Parent short ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Comment author UID"
+        },
+        "userName": {
+          "type": "string",
+          "description": "Author name"
+        },
+        "userPhotoUrl": {
+          "type": "string",
+          "description": "Author avatar URL"
+        },
+        "text": {
+          "type": "string",
+          "description": "Comment body"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Comment timestamp"
+        }
+      },
+      "required": ["id", "shortId", "userId", "userName", "text"]
+    },
+    "Like": {
+      "title": "Like",
+      "description": "User like record on a short reel.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Like record ID shortId_userId"
+        },
+        "shortId": {
+          "type": "string",
+          "description": "Target short ID"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User UID who liked"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Like timestamp"
+        }
+      },
+      "required": ["id", "shortId", "userId"]
+    },
+    "Favorite": {
+      "title": "Favorite",
+      "description": "User saved listing record.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Favorite record ID userId_listingId"
+        },
+        "userId": {
+          "type": "string",
+          "description": "User UID who favorited"
+        },
+        "listingId": {
+          "type": "string",
+          "description": "Favorited listing ID"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Favorited timestamp"
+        }
+      },
+      "required": ["id", "userId", "listingId"]
+    },
+    "Breed": {
+      "title": "Breed",
+      "description": "Expandable breed catalog for goats and sheep managed by admin.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Breed ID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Breed name"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["goat", "sheep"],
+          "description": "Goat or sheep"
+        },
+        "origin": {
+          "type": "string",
+          "description": "Geographical origin"
+        },
+        "description": {
+          "type": "string",
+          "description": "Breed physical characteristics and facts"
+        },
+        "isExotic": {
+          "type": "boolean",
+          "description": "Whether breed is exotic"
+        },
+        "popularity": {
+          "type": "number",
+          "description": "Sorting priority score"
+        }
+      },
+      "required": ["id", "name", "category"]
+    },
+    "AdminSettings": {
+      "title": "AdminSettings",
+      "description": "Platform configuration settings.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Config document ID"
+        },
+        "contactPhone": {
+          "type": "string",
+          "description": "Official support phone"
+        },
+        "contactWhatsApp": {
+          "type": "string",
+          "description": "Official support WhatsApp"
+        },
+        "contactEmail": {
+          "type": "string",
+          "description": "Official support email"
+        },
+        "announcementText": {
+          "type": "string",
+          "description": "Global banner announcement"
+        },
+        "showAnnouncement": {
+          "type": "boolean",
+          "description": "Whether announcement banner is active"
+        },
+        "adSenseClientId": {
+          "type": "string",
+          "description": "Google AdSense client ID"
+        },
+        "adSenseSlotId": {
+          "type": "string",
+          "description": "Google AdSense slot ID"
+        },
+        "adMobBannerId": {
+          "type": "string",
+          "description": "AdMob Banner ID"
+        },
+        "adMobInterstitialId": {
+          "type": "string",
+          "description": "AdMob Interstitial ID"
+        },
+        "adsEnabled": {
+          "type": "boolean",
+          "description": "Whether advertising blocks are displayed"
+        }
+      },
+      "required": ["id"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile records. Writable by the user or admin."
+    },
+    "/listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Animal sale listings. Publicly readable if available/sold. Writable by owner or admin."
+    },
+    "/shorts/{shortId}": {
+      "schema": "Short",
+      "description": "9:16 vertical animal video reels. Publicly readable. Writable by creator or admin."
+    },
+    "/shorts/{shortId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on a short video reel. Readable by all, creatable by authenticated users."
+    },
+    "/likes/{likeId}": {
+      "schema": "Like",
+      "description": "Reel likes. Creatable and deletable by the owner of the like."
+    },
+    "/favorites/{favoriteId}": {
+      "schema": "Favorite",
+      "description": "Saved listings per user. Readable and writable by the user."
+    },
+    "/breeds/{breedId}": {
+      "schema": "Breed",
+      "description": "Breed catalog. Publicly readable, writable by admin."
+    },
+    "/adminSettings/{settingId}": {
+      "schema": "AdminSettings",
+      "description": "App settings. Publicly readable, writable only by admin."
+    }
+  }
+}
